@@ -10,7 +10,7 @@ const DEFAULT_CONFIG = {
   ignoreMatches: [
     'vite',
     'vitest',
-    'unbuild',
+    'tsdown',
     '@vben/tsconfig',
     '@vben/vite-config',
     '@types/*',
@@ -22,7 +22,8 @@ const DEFAULT_CONFIG = {
     '@vben/commitlint-config',
     '@vben/eslint-config',
     '@vben/node-utils',
-    '@vben/prettier-config',
+    '@vben/oxfmt-config',
+    '@vben/oxlint-config',
     '@vben/stylelint-config',
     '@vben/tsconfig',
     '@vben/vite-config',
