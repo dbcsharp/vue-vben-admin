@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LayoutType } from '@vben/types';
 
-import { onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 
 import { $t } from '@vben/locales';
 
@@ -27,21 +27,25 @@ const sidebarButtons = defineModel<string[]>('sidebarButtons', { default: [] });
 const sidebarCollapsedButton = defineModel<boolean>('sidebarCollapsedButton');
 const sidebarFixedButton = defineModel<boolean>('sidebarFixedButton');
 
-onMounted(() => {
-  if (
-    sidebarCollapsedButton.value &&
-    !sidebarButtons.value.includes('collapsed')
-  ) {
-    sidebarButtons.value.push('collapsed');
+// 同步按钮状态
+const syncSidebarButtons = () => {
+  const buttons: string[] = [];
+  if (sidebarCollapsedButton.value) {
+    buttons.push('collapsed');
   }
-  if (sidebarFixedButton.value && !sidebarButtons.value.includes('fixed')) {
-    sidebarButtons.value.push('fixed');
+  if (sidebarFixedButton.value) {
+    buttons.push('fixed');
   }
-});
+  sidebarButtons.value = buttons;
+};
+
+// 初始化和监听变化
+syncSidebarButtons();
+watch([sidebarCollapsedButton, sidebarFixedButton], syncSidebarButtons);
 
 const handleCheckboxChange = () => {
-  sidebarCollapsedButton.value = !!sidebarButtons.value.includes('collapsed');
-  sidebarFixedButton.value = !!sidebarButtons.value.includes('fixed');
+  sidebarCollapsedButton.value = sidebarButtons.value.includes('collapsed');
+  sidebarFixedButton.value = sidebarButtons.value.includes('fixed');
 };
 </script>
 

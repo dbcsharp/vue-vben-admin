@@ -407,13 +407,27 @@ watch(
 
 watch(
   () => props.footerHeight,
-  (height: number) => {
-    setLayoutFooterHeight(height);
+  () => {
+    updateFooterHeight();
   },
   {
     immediate: true,
   },
 );
+
+// 监听 footer 启用和固定状态变化
+watch([() => props.footerEnable, () => props.footerFixed], () => {
+  updateFooterHeight();
+});
+
+function updateFooterHeight() {
+  // 只有启用底栏且固定时才设置 footer 高度变量
+  if (props.footerEnable && props.footerFixed) {
+    setLayoutFooterHeight(props.footerHeight);
+  } else {
+    setLayoutFooterHeight(0);
+  }
+}
 
 {
   const HEADER_TRIGGER_DISTANCE = 12;

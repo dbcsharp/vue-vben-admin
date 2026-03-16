@@ -5,7 +5,10 @@ import type { PageProps } from './types';
 
 import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
 
-import { CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT } from '@vben-core/shared/constants';
+import {
+  CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT,
+  CSS_VARIABLE_LAYOUT_FOOTER_HEIGHT,
+} from '@vben-core/shared/constants';
 import { cn } from '@vben-core/shared/utils';
 
 defineOptions({
@@ -25,7 +28,7 @@ const footerRef = useTemplateRef<HTMLDivElement>('footerRef');
 const contentStyle = computed<StyleValue>(() => {
   if (autoContentHeight) {
     return {
-      height: `calc(var(${CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT}) - ${headerHeight.value}px - ${footerHeight.value}px - ${typeof heightOffset === 'number' ? `${heightOffset}px` : heightOffset})`,
+      height: `calc(var(${CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT}) - var(${CSS_VARIABLE_LAYOUT_FOOTER_HEIGHT}, 0px) - ${headerHeight.value}px - ${footerHeight.value}px - ${typeof heightOffset === 'number' ? `${heightOffset}px` : heightOffset})`,
       overflowY: shouldAutoHeight.value ? 'auto' : 'unset',
     };
   }
@@ -86,7 +89,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div :class="cn('h-full p-4', contentClass)" :style="contentStyle">
+    <div :class="cn('h-full p-4 pb-2', contentClass)" :style="contentStyle">
       <slot></slot>
     </div>
     <div
